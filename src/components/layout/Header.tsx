@@ -5,7 +5,6 @@ import { NavLink } from "@/components/navigation/NavLink";
 import { SiteLogo } from "@/components/layout/SiteLogo";
 import { LinkButton } from "@/components/ui/Button";
 import { siteConfig } from "@/config/site";
-import { withHighlightsNavItem } from "@/lib/navigation";
 import type { SiteSettings } from "../../../sanity/types";
 
 type HeaderProps = {
@@ -14,7 +13,7 @@ type HeaderProps = {
 
 export function Header({ settings }: HeaderProps) {
   const siteName = settings?.siteName ?? siteConfig.name;
-  const navigation = withHighlightsNavItem(settings?.mainNavigation ?? []);
+  const navigation = settings?.mainNavigation ?? [];
   const headerCta = settings?.headerCta ?? {
     label: "Join Us →",
     href: "/contact",
@@ -25,11 +24,7 @@ export function Header({ settings }: HeaderProps) {
       <div className="container-px flex h-[var(--layout-header-height)] w-full items-center justify-between py-2 sm:py-3">
         <HeaderMotion className="flex min-w-0 w-full items-center justify-between gap-3">
           <HeaderMotionItem className="min-w-0 shrink">
-            <SiteLogo
-              siteName={siteName}
-              partnerLink={settings?.partnerLogoLink}
-              size="header"
-            />
+            <SiteLogo siteName={siteName} size="header" />
           </HeaderMotionItem>
 
           {/* Controls stay outside motion items so the menu toggle is clickable immediately. */}

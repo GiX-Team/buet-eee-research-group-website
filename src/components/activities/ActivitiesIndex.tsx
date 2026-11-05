@@ -18,31 +18,14 @@ import type { ActivitySummary } from "../../../sanity/types";
 
 type ActivitiesIndexProps = {
   activities: ActivitySummary[];
-  /** Accessible name for the list section. Defaults to the News wording. */
-  sectionLabel?: string;
-  /** Text shown when the archive has no entries at all. */
-  emptyMessage?: string;
-  /**
-   * Shows the category filter tabs and the category label on each entry.
-   * Set to false for pages whose entries are not grouped by category.
-   */
-  showCategories?: boolean;
 };
 
-export function ActivitiesIndex({
-  activities,
-  sectionLabel = "News and activities",
-  emptyMessage = "Updates from the group will appear here.",
-  showCategories = true,
-}: ActivitiesIndexProps) {
+export function ActivitiesIndex({ activities }: ActivitiesIndexProps) {
   const [category, setCategory] = useState<ActivityCategoryFilter>("all");
 
   const ordered = useMemo(() => sortActivities(activities), [activities]);
   const filters = useMemo(() => getActivityCategoryFilters(ordered), [ordered]);
-  const showFilters = useMemo(
-    () => showCategories && shouldShowActivityFilters(ordered),
-    [ordered, showCategories],
-  );
+  const showFilters = useMemo(() => shouldShowActivityFilters(ordered), [ordered]);
   const activeCategory = filters.some((filter) => filter.value === category)
     ? category
     : "all";
@@ -93,7 +76,7 @@ export function ActivitiesIndex({
       ) : null}
 
       <section
-        aria-label={sectionLabel}
+        aria-label="News and activities"
         className="bg-surface-base page-content-padding"
       >
         <Container as="div">
@@ -104,7 +87,6 @@ export function ActivitiesIndex({
                   <ActivityEntry
                     activity={activity}
                     withFigureColumn={withFigureColumn}
-                    showCategory={showCategories}
                     priority={activity._id === firstEntryId}
                   />
                 </StaggerItem>
@@ -114,7 +96,7 @@ export function ActivitiesIndex({
             <Reveal variant="fadeUpSubtle">
               <p className="text-body-sm text-text-secondary">
                 {ordered.length === 0
-                  ? emptyMessage
+                  ? "Updates from the group will appear here."
                   : "No entries in this category yet."}
               </p>
             </Reveal>

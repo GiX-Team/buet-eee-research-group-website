@@ -34,6 +34,7 @@ export default async function PublicationsPage({
       <JsonLd data={buildPublicationsJsonLd(publications)} />
       <PublicationsPageHeader />
       <PublicationsIndex
+        key={area ?? "all"}
         publications={publications}
         researchAreas={researchAreas}
         initialResearchArea={area}

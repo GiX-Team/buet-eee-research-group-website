@@ -43,14 +43,6 @@ export const siteSettings = defineType({
         "Institutional logo shown beside the NC Group logo in the header and footer.",
     }),
     defineField({
-      name: "partnerLogoLink",
-      title: "Institution Logo Link",
-      type: "link",
-      group: "general",
-      description:
-        "Where the institution logo in the header and footer points. Leave empty to use the BUET website. The link label is used as the logo's accessible name. Use Open in New Tab to choose whether the destination opens in a new tab or the current tab.",
-    }),
-    defineField({
       name: "headerCta",
       title: "Header Call-to-Action",
       type: "link",
@@ -98,8 +90,7 @@ export const siteSettings = defineType({
       type: "text",
       rows: 3,
       group: "footer",
-      description:
-        "Legacy single address field. Prefer the structured contact page fields below.",
+      description: "Legacy single address field. Prefer the structured contact page fields below.",
     }),
     defineField({
       name: "contactPageDescription",
@@ -136,8 +127,7 @@ export const siteSettings = defineType({
       type: "text",
       rows: 5,
       group: "footer",
-      description:
-        "Office location lines. One line per row. Mailing address is omitted when identical.",
+      description: "Office location lines. One line per row. Mailing address is omitted when identical.",
     }),
     defineField({
       name: "contactMailingAddress",

@@ -155,18 +155,6 @@ export const contributionSummaryFields = /* groq */ `
   displayOrder
 `;
 
-export const collaborationSummaryFields = /* groq */ `
-  _id,
-  name,
-  websiteUrl,
-  openInNewTab,
-  displayOrder,
-  isActive,
-  logo {
-    ${imageFields}
-  }
-`;
-
 export const activitySummaryFields = /* groq */ `
   _id,
   title,
