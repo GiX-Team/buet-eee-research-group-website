@@ -12,12 +12,15 @@ type ActivityEntryProps = {
    * edge. Omitted when no entry in view has an image.
    */
   withFigureColumn?: boolean;
+  /** Shows the category label above the headline. Defaults to true. */
+  showCategory?: boolean;
   priority?: boolean;
 };
 
 export function ActivityEntry({
   activity,
   withFigureColumn = false,
+  showCategory = true,
   priority = false,
 }: ActivityEntryProps) {
   return (
@@ -36,7 +39,7 @@ export function ActivityEntry({
       />
 
       <div className="flex min-w-0 flex-col gap-3 sm:gap-5">
-        <ActivityMeta activity={activity} />
+        <ActivityMeta activity={activity} showCategory={showCategory} />
 
         <h3 className="max-w-[45rem] text-heading-md text-text-primary">
           <ActivityHeadline activity={activity} />

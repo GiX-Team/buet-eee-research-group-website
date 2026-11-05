@@ -1,5 +1,6 @@
 import {
   activitySummaryFields,
+  collaborationSummaryFields,
   contributionSummaryFields,
   linkFields,
   navItemFields,
@@ -36,6 +37,9 @@ export const siteSettingsQuery = /* groq */ `
       alt,
       hotspot,
       crop
+    },
+    partnerLogoLink {
+      ${linkFields}
     },
     mainNavigation[] {
       ${navItemFields}
@@ -122,6 +126,18 @@ export const homepageQuery = /* groq */ `
       href,
       openInNewTab
     },
+    collaborationsSectionHeading,
+    collaborationsSectionDescription,
+    collaborations[]->{
+      ${collaborationSummaryFields}
+    },
+    collaborationsLayout {
+      columns,
+      mobileColumns,
+      rows,
+      logoSize,
+      alignment
+    },
     seo {
       ${seoFields}
     }
@@ -131,8 +147,8 @@ export const homepageQuery = /* groq */ `
 export const allResearchAreasQuery = /* groq */ `
   *[_type == "researchArea" && isPublished == true] | order(displayOrder asc) {
     ${researchAreaSummaryFields},
-    "publicationCount": count(*[_type == "publication" && ${publishedPublicationFilter} && references(^._id)]),
-    "selectedPublications": *[_type == "publication" && ${publishedPublicationFilter} && references(^._id)]
+    "publicationCount": count(*[_type == "publication" && ${publishedPublicationFilter} && ^._id in researchAreas[]._ref]),
+    "selectedPublications": *[_type == "publication" && ${publishedPublicationFilter} && ^._id in researchAreas[]._ref]
       | order(displayOrder asc, title asc)[0...3] {
       ${publicationSummaryFields}
     },
@@ -144,7 +160,7 @@ export const researchAreaBySlugQuery = /* groq */ `
   *[_type == "researchArea" && slug.current == $slug && isPublished == true][0] {
     ${researchAreaSummaryFields},
     seo { ${seoFields} },
-    "relatedPublications": *[_type == "publication" && ${publishedPublicationFilter} && references(^._id)] | order(displayOrder asc, title asc) {
+    "relatedPublications": *[_type == "publication" && ${publishedPublicationFilter} && ^._id in researchAreas[]._ref] | order(displayOrder asc, title asc) {
       ${publicationSummaryFields}
     },
     "relatedPeople": *[_type == "person" && references(^._id) && isActive == true] | order(displayOrder asc) {

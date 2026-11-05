@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ActivitiesSection } from "@/components/home/ActivitiesSection";
+import { CollaborationsSection } from "@/components/home/CollaborationsSection";
 import { ContributionsSection } from "@/components/home/ContributionsSection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { JoinSection } from "@/components/home/JoinSection";
@@ -9,7 +10,14 @@ import { ResearchSection } from "@/components/home/ResearchSection";
 import { TeamSection } from "@/components/home/TeamSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { Container } from "@/components/ui/Container";
-import { getActivities, getContributionCounts, getHomepage, getRecentPublications, getResearchAreas, getSiteSettings } from "@/lib/cms";
+import {
+  getActivities,
+  getContributionCounts,
+  getHomepage,
+  getRecentPublications,
+  getResearchAreas,
+  getSiteSettings,
+} from "@/lib/cms";
 import { enrichContributionsWithLiveCounts } from "@/lib/contributions";
 import { siteConfig } from "@/config/site";
 import { buildMetadata } from "@/lib/metadata";
@@ -41,8 +49,8 @@ export default async function HomePage() {
         </Reveal>
         <Reveal immediate variant="fadeUpSubtle" delay={0.08}>
           <p className="mt-4 max-w-2xl text-body-md text-text-muted">
-            The application architecture is ready. Configure Sanity environment variables
-            in{" "}
+            The application architecture is ready. Configure Sanity environment
+            variables in{" "}
             <code className="rounded bg-border-default px-1 py-0.5 text-body-sm">
               .env.local
             </code>{" "}
@@ -65,7 +73,8 @@ export default async function HomePage() {
         </Reveal>
         <Reveal immediate variant="fadeUpSubtle" delay={0.08}>
           <p className="mt-4 max-w-2xl text-body-md text-text-muted">
-            Sanity is connected, but the Homepage document has not been created yet. Open{" "}
+            Sanity is connected, but the Homepage document has not been created yet.
+            Open{" "}
             <Link href="/studio" className="underline">
               Sanity Studio
             </Link>{" "}
@@ -78,16 +87,17 @@ export default async function HomePage() {
     );
   }
 
-  const [activities, featuredPublications, contributionCounts, researchAreas] = await Promise.all([
-    homepage.featuredActivities?.length && homepage.featuredActivities.length > 0
-      ? Promise.resolve(homepage.featuredActivities)
-      : getActivities().then((items) => items.slice(0, 4)),
-    homepage.featuredPublications?.length && homepage.featuredPublications.length > 0
-      ? Promise.resolve(homepage.featuredPublications)
-      : getRecentPublications().then((items) => items.slice(0, 6)),
-    getContributionCounts(),
-    getResearchAreas(),
-  ]);
+  const [activities, featuredPublications, contributionCounts, researchAreas] =
+    await Promise.all([
+      homepage.featuredActivities?.length && homepage.featuredActivities.length > 0
+        ? Promise.resolve(homepage.featuredActivities)
+        : getActivities().then((items) => items.slice(0, 4)),
+      homepage.featuredPublications?.length && homepage.featuredPublications.length > 0
+        ? Promise.resolve(homepage.featuredPublications)
+        : getRecentPublications().then((items) => items.slice(0, 6)),
+      getContributionCounts(),
+      getResearchAreas(),
+    ]);
 
   const contributions = enrichContributionsWithLiveCounts(
     homepage.featuredContributions ?? [],
@@ -133,6 +143,13 @@ export default async function HomePage() {
         heading={homepage.joinUsHeading}
         description={homepage.joinUsDescription}
         button={homepage.joinUsButton}
+      />
+
+      <CollaborationsSection
+        heading={homepage.collaborationsSectionHeading}
+        description={homepage.collaborationsSectionDescription}
+        collaborations={homepage.collaborations}
+        layout={homepage.collaborationsLayout}
       />
     </>
   );

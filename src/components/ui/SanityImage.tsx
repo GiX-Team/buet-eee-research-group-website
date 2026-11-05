@@ -5,6 +5,19 @@ import { cn } from "@/lib/utils";
 import { urlFor, type ImageOptions } from "../../../sanity/lib/image";
 import type { SanityImage } from "../../../sanity/types";
 
+/**
+ * Static images live in `/public` and are referenced by a root-relative URL.
+ * They are rendered directly instead of being sent through the Sanity CDN.
+ */
+function getStaticImageSrc(image: SanityImage | SanityImageSource): string | undefined {
+  if (typeof image !== "object" || !image || !("asset" in image)) return undefined;
+  const url =
+    image.asset && typeof image.asset === "object" && "url" in image.asset
+      ? image.asset.url
+      : undefined;
+  return typeof url === "string" && url.startsWith("/") ? url : undefined;
+}
+
 type SanityImageProps = {
   image?: SanityImage | SanityImageSource;
   alt?: string;
@@ -46,12 +59,14 @@ export function SanityImageComponent({
       ? Math.round(width / image.asset.metadata.dimensions.aspectRatio)
       : Math.round(width * 0.75));
 
-  const src = urlFor(image, {
-    width,
-    ...(fit === "max" || fit === "min" ? {} : { height: aspectHeight }),
-    fit,
-    quality: 80,
-  });
+  const src =
+    getStaticImageSrc(image) ??
+    urlFor(image, {
+      width,
+      ...(fit === "max" || fit === "min" ? {} : { height: aspectHeight }),
+      fit,
+      quality: 80,
+    });
   const blurDataURL =
     typeof image === "object" && "asset" in image
       ? image.asset?.metadata?.lqip

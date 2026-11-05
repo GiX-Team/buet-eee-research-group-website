@@ -442,14 +442,8 @@
 
 @media (min-width: 1280px) {
   .container-px {
-    padding-left: max(
-      var(--space-container-x),
-      env(safe-area-inset-left, 0px)
-    );
-    padding-right: max(
-      var(--space-container-x),
-      env(safe-area-inset-right, 0px)
-    );
+    padding-left: max(var(--space-container-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--space-container-x), env(safe-area-inset-right, 0px));
   }
 }
 
@@ -468,18 +462,12 @@
 
 /* Hero honeycomb: scale to the hero band height, not the full viewport. */
 .hero-honeycomb {
-  --hero-hex-scale: min(
-    (100vw - 2rem) / 40.25rem,
-    min(85vh, 40rem) / 42.5rem
-  );
+  --hero-hex-scale: min((100vw - 2rem) / 40.25rem, min(85vh, 40rem) / 42.5rem);
 }
 
 @media (min-width: 640px) {
   .hero-honeycomb {
-    --hero-hex-scale: min(
-      (100vw - 2rem) / 40.25rem,
-      min(88vh, 47.5rem) / 42.5rem
-    );
+    --hero-hex-scale: min((100vw - 2rem) / 40.25rem, min(88vh, 47.5rem) / 42.5rem);
   }
 }
 
@@ -776,4 +764,19 @@ body {
   overflow: visible;
   clip: auto;
   white-space: normal;
+}
+
+/* Homepage collaborations — column counts come from the Sanity layout object. */
+.collaboration-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--collaboration-columns, 1), minmax(0, 1fr));
+}
+
+@media (max-width: 639px) {
+  .collaboration-grid {
+    grid-template-columns: repeat(
+      var(--collaboration-mobile-columns, 1),
+      minmax(0, 1fr)
+    );
+  }
 }
