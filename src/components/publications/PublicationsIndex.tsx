@@ -39,27 +39,18 @@ export function PublicationsIndex({
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<PublicationTypeFilter>("all");
-  const [researchAreaFilter, setResearchAreaFilter] = useState<ResearchAreaFilter>(() =>
-    parseResearchAreaFilter(initialResearchArea, researchAreas),
+  const [researchAreaFilter, setResearchAreaFilter] = useState<ResearchAreaFilter>(
+    () => parseResearchAreaFilter(initialResearchArea, researchAreas),
   );
-
-  // Keep the select in sync when the URL changes (for example, arriving from a
-  // research-area link) without remounting the page and clearing the search or
-  // publication-type filters.
-  const urlResearchArea = parseResearchAreaFilter(initialResearchArea, researchAreas);
-  const [lastUrlResearchArea, setLastUrlResearchArea] =
-    useState<ResearchAreaFilter>(urlResearchArea);
-
-  if (urlResearchArea !== lastUrlResearchArea) {
-    setLastUrlResearchArea(urlResearchArea);
-    setResearchAreaFilter(urlResearchArea);
-  }
 
   const showResearchAreaFilters = useMemo(
     () => shouldShowResearchAreaFilters(researchAreas),
     [researchAreas],
   );
-  const activeResearchArea = parseResearchAreaFilter(researchAreaFilter, researchAreas);
+  const activeResearchArea = parseResearchAreaFilter(
+    researchAreaFilter,
+    researchAreas,
+  );
 
   function handleResearchAreaChange(next: ResearchAreaFilter) {
     setResearchAreaFilter(next);

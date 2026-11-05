@@ -3,7 +3,7 @@ import { MediaFrame } from "@/components/ui/MediaFrame";
 import {
   getPublicationExternalUrl,
   getPublicationHighlightTitle,
-  getPublicationType,
+  inferPublicationType,
 } from "@/lib/publications";
 import { hoverEaseClass } from "@/lib/motion/transitions";
 import { cn, formatPublicationAuthors, getDoiUrl } from "@/lib/utils";
@@ -27,13 +27,9 @@ export function PublicationListEntry({
   const externalUrl = getPublicationExternalUrl(publication);
   const highlightTitle = getPublicationHighlightTitle(publication);
   const showPublicationTitle = publication.title.trim() !== highlightTitle;
-  const publicationType = getPublicationType(publication);
+  const publicationType = inferPublicationType(publication);
   const publicationTypeLabel =
-    publicationType === "conference"
-      ? "Conference"
-      : publicationType === "journal"
-        ? "Journal"
-        : null;
+    publicationType === "conference" ? "Conference" : "Journal";
   const authors = formatPublicationAuthors(publication);
   const hasImage = Boolean(publication.image?.asset);
   const imageUrl = publication.image?.asset?.url;
@@ -73,9 +69,7 @@ export function PublicationListEntry({
         />
       )}
       {publication.figureCaption ? (
-        <p className="text-center text-body-sm text-text-tertiary">
-          {publication.figureCaption}
-        </p>
+        <p className="text-center text-body-sm text-text-tertiary">{publication.figureCaption}</p>
       ) : null}
     </div>
   ) : null;
@@ -85,18 +79,15 @@ export function PublicationListEntry({
       <div
         className={cn(
           "flex flex-col gap-6",
-          hasImage &&
-            "lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-center lg:gap-x-14",
+          hasImage && "lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-center lg:gap-x-14",
         )}
       >
         <div className="flex items-start gap-4">
           <div className="flex min-w-0 flex-1 flex-col gap-4">
             <div className="flex flex-col gap-2.5">
-              {publicationTypeLabel ? (
-                <p className="text-label-xs tracking-[0.06em] text-text-tertiary uppercase">
-                  {publicationTypeLabel}
-                </p>
-              ) : null}
+              <p className="text-label-xs tracking-[0.06em] text-text-tertiary uppercase">
+                {publicationTypeLabel}
+              </p>
 
               <h3 className="text-heading-lg max-w-[42rem] text-text-primary [overflow-wrap:break-word]">
                 {highlightTitle}
@@ -125,9 +116,7 @@ export function PublicationListEntry({
 
             <div className="flex flex-col gap-1">
               {authors ? (
-                <p className="text-body-sm max-w-[42rem] text-text-secondary">
-                  {authors}
-                </p>
+                <p className="text-body-sm max-w-[42rem] text-text-secondary">{authors}</p>
               ) : null}
 
               <p className="text-caption tracking-[0.04em] text-text-tertiary uppercase">

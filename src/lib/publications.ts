@@ -22,18 +22,16 @@ export function parseResearchAreaFilter(
   return catalog.some((area) => area.slug === slug) ? slug : "all";
 }
 
-/**
- * Returns the type explicitly selected in Sanity.
- *
- * Missing or invalid values are treated as unclassified instead of guessing
- * from the venue name. This keeps the Journal/Conference filters honest: a
- * publication only appears under a type when an editor actually set that type.
- */
-export function getPublicationType(
+const CONFERENCE_PATTERN =
+  /conference|symposium|workshop|iedm|irps|proceedings|proc\./i;
+
+export function inferPublicationType(
   publication: PublicationSummary,
-): "journal" | "conference" | undefined {
-  const type = publication.publicationType;
-  return type === "journal" || type === "conference" ? type : undefined;
+): "journal" | "conference" {
+  if (publication.publicationType) return publication.publicationType;
+  return CONFERENCE_PATTERN.test(publication.journalOrConference)
+    ? "conference"
+    : "journal";
 }
 
 export function getPublicationHighlightTitle(
@@ -56,21 +54,16 @@ type ResearchAreaCatalogEntry = {
   displayOrder?: number;
 };
 
-/**
- * Research areas explicitly selected by an editor in Sanity.
- *
- * Hidden sync suggestions (`suggestedResearchAreas`) are intentionally ignored
- * here. They help editors curate a publication in the Studio, but they must not
- * make that publication appear under a public research-area filter before the
- * areas are confirmed.
- */
 function getPublicationResearchAreas(
   publication: PublicationSummary,
 ): Array<{ slug: string; title: string }> {
   const seen = new Set<string>();
   const areas: Array<{ slug: string; title: string }> = [];
 
-  for (const area of publication.researchAreas ?? []) {
+  for (const area of [
+    ...(publication.researchAreas ?? []),
+    ...(publication.suggestedResearchAreas ?? []),
+  ]) {
     if (!area.slug || seen.has(area.slug)) continue;
     seen.add(area.slug);
     areas.push({ slug: area.slug, title: area.title });
@@ -90,7 +83,8 @@ export function getResearchAreaFilters(
   const options = [...catalog]
     .sort(
       (a, b) =>
-        (a.displayOrder ?? 0) - (b.displayOrder ?? 0) || a.title.localeCompare(b.title),
+        (a.displayOrder ?? 0) - (b.displayOrder ?? 0) ||
+        a.title.localeCompare(b.title),
     )
     .map((area) => ({ value: area.slug, label: area.title }));
 
@@ -119,7 +113,7 @@ export function filterPublications(
   const normalizedQuery = query.trim().toLowerCase();
 
   return publications.filter((publication) => {
-    if (type !== "all" && getPublicationType(publication) !== type) {
+    if (type !== "all" && inferPublicationType(publication) !== type) {
       return false;
     }
 
