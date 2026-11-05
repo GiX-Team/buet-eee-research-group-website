@@ -12,6 +12,7 @@ export const homepage = defineType({
     { name: "contributions", title: "Contributions" },
     { name: "activities", title: "Activities" },
     { name: "joinUs", title: "Join Us" },
+    { name: "collaborations", title: "Collaborations" },
     { name: "seo", title: "SEO" },
   ],
   fields: [
@@ -190,6 +191,38 @@ export const homepage = defineType({
       title: "Call-to-Action Button",
       type: "link",
       group: "joinUs",
+    }),
+
+    // Collaborations
+    defineField({
+      name: "collaborationsSectionHeading",
+      title: "Section Heading",
+      type: "string",
+      group: "collaborations",
+    }),
+    defineField({
+      name: "collaborationsSectionDescription",
+      title: "Section Description",
+      type: "text",
+      rows: 3,
+      group: "collaborations",
+    }),
+    defineField({
+      name: "collaborations",
+      title: "Collaboration Logos",
+      type: "array",
+      group: "collaborations",
+      of: [{ type: "reference", to: [{ type: "collaboration" }] }],
+      description:
+        "Select the collaborations to show and drag them into the order you want. Inactive collaboration documents are hidden.",
+    }),
+    defineField({
+      name: "collaborationsLayout",
+      title: "Logo Layout",
+      type: "collaborationLayout",
+      group: "collaborations",
+      description:
+        "Control the number of rows and columns, mobile columns, logo size, and alignment.",
     }),
 
     // SEO

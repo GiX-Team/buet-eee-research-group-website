@@ -41,6 +41,8 @@ export type SiteSettings = {
   siteDescription?: string;
   logo?: SanityImage;
   partnerLogo?: SanityImage;
+  /** Destination for the institution logo in the header and footer. */
+  partnerLogoLink?: Link;
   mainNavigation?: NavItem[];
   headerCta?: Link;
   footerNavigation?: NavItem[];
@@ -134,7 +136,10 @@ export type PublicationSummary = {
   figureCaption?: string;
   authorLine?: string;
   researchAreas?: Array<{ _id: string; title: string; slug: string }>;
-  /** Sync suggestions — used for filtering until editors confirm into researchAreas. */
+  /**
+   * Hidden sync suggestions for editors. These are not used by public
+   * research-area filters; only `researchAreas` controls public placement.
+   */
   suggestedResearchAreas?: Array<{ _id: string; title: string; slug: string }>;
 };
 
@@ -189,6 +194,24 @@ export type Activity = ActivitySummary & {
   seo?: SeoFields;
 };
 
+export type Collaboration = {
+  _id: string;
+  name: string;
+  logo?: SanityImage;
+  websiteUrl?: string;
+  openInNewTab?: boolean;
+  displayOrder?: number;
+  isActive?: boolean;
+};
+
+export type CollaborationLayout = {
+  columns?: number;
+  mobileColumns?: number;
+  rows?: number;
+  logoSize?: "small" | "medium" | "large";
+  alignment?: "left" | "center";
+};
+
 export type Homepage = {
   heroEyebrow?: string;
   heroHeading?: string;
@@ -213,6 +236,10 @@ export type Homepage = {
   joinUsHeading?: string;
   joinUsDescription?: PortableTextBlock[];
   joinUsButton?: Link;
+  collaborationsSectionHeading?: string;
+  collaborationsSectionDescription?: string;
+  collaborations?: Collaboration[];
+  collaborationsLayout?: CollaborationLayout;
   seo?: SeoFields;
 };
 

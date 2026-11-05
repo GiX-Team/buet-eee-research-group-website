@@ -30,7 +30,10 @@ export function Footer({ settings }: FooterProps) {
     <footer className="mt-auto bg-surface-base">
       <RuleReveal viewport={VIEWPORT_FOOTER} />
 
-      <Container as="div" className="space-y-10 pb-8 pt-12 sm:space-y-16 sm:pb-10 sm:pt-16 lg:pt-[72px]">
+      <Container
+        as="div"
+        className="space-y-10 pb-8 pt-12 sm:space-y-16 sm:pb-10 sm:pt-16 lg:pt-[72px]"
+      >
         <Stagger
           stagger={0.08}
           viewport={VIEWPORT_FOOTER}
@@ -38,7 +41,11 @@ export function Footer({ settings }: FooterProps) {
         >
           <StaggerItem>
             <div className="space-y-3.5">
-              <SiteLogo siteName={siteName} size="footer" />
+              <SiteLogo
+                siteName={siteName}
+                partnerLink={settings?.partnerLogoLink}
+                size="footer"
+              />
               <p className="max-w-[320px] text-body-xs text-text-primary">
                 {siteConfig.fullName}
               </p>

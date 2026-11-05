@@ -1,5 +1,6 @@
 import activity from "./documents/activity";
 import application from "./documents/application";
+import collaboration from "./documents/collaboration";
 import contribution from "./documents/contribution";
 import homepage from "./documents/homepage";
 import patent from "./documents/patent";
@@ -8,6 +9,7 @@ import publication from "./documents/publication";
 import researchArea from "./documents/researchArea";
 import siteSettings from "./documents/siteSettings";
 import syncState from "./documents/syncState";
+import collaborationLayout from "./objects/collaborationLayout";
 import imageWithAlt from "./objects/imageWithAlt";
 import link from "./objects/link";
 import navItem from "./objects/navItem";
@@ -23,6 +25,7 @@ export const schemaTypes = [
   navItem,
   portableText,
   imageWithAlt,
+  collaborationLayout,
 
   // Documents
   siteSettings,
@@ -35,4 +38,5 @@ export const schemaTypes = [
   activity,
   application,
   contribution,
+  collaboration,
 ];
